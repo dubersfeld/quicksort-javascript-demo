@@ -19,14 +19,16 @@ function canvasApp() {
 
   var results = [];// array of arrays
 
-  var count = 0;// number of comparisons for display only 
-  var swapCount = 0;// number of swaps for display only
-
 
   function Sorter(values) {
    
     this.values = values;
     this.aux = [];
+  
+    //results.length = 0;
+    
+    this.swapCount = 0;
+    this.count = 0;
 
     // used for animation only
     this.display = function() {
@@ -53,13 +55,15 @@ function canvasApp() {
           if (this.values[ this.aux[j] ] <= temp) {
             i++;
             this.swap(i-1, j);
-            swapCount++;
+	    results.push(this.aux.slice(0));// save copy for animation after each swap
+            this.swapCount++;
           }
-	  count++;
+	  this.count++;
         }
 
         this.swap(i, r);
-        swapCount++;
+	results.push(this.aux.slice(0));// save copy for animation after each swap
+        this.swapCount++;
 
         return i; 
     };// partition
@@ -90,8 +94,9 @@ function canvasApp() {
             stack.push([q+1, r]);
           }
                  
-          results.push(this.aux.slice(0));// save copy for animation
-        }        
+        }// while  
+
+   	results.push(this.aux.slice(0));// save copy for animation      
 
     };// quickSort
  
@@ -127,7 +132,7 @@ function canvasApp() {
       context.lineTo(xPos[i], yMax - values[i]);
       context.stroke();
       context.closePath();
-    }
+    }// for
   }// drawValues
 
 
@@ -144,12 +149,6 @@ function canvasApp() {
 
   }// renderAnim
 
-
-  function initValues() {
-    
-    randomize();
-   
-  }// initValues
 
   if (!canvasSupport()) {
     return;
@@ -171,7 +170,7 @@ function canvasApp() {
     results.length = 0; 
    
     if (!randomized) {
-      initValues();
+      randomize();
     }
 
     fillBackground();
@@ -186,10 +185,10 @@ function canvasApp() {
     sorter.quickSort();
 
     // display count
-    $('#count').text(count);
+    $('#count').text(sorter.count);
 
     // display swapCount
-    $('#swapCount').text(swapCount);
+    $('#swapCount').text(sorter.swapCount);
 
     $('#stanim').find(':submit')[0].disabled = false;
     $('#initelem').find(':submit')[0].disabled = false;
@@ -266,9 +265,5 @@ function canvasApp() {
 }// canvasApp
 
 
-function eventWindowLoaded() {
-  canvasApp();
-}// canvasApp
-
-$(document).ready(eventWindowLoaded);
+$(document).ready(canvasApp);
 
