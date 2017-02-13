@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Quicksort</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="quicksortDemo.js"></script>
+<link rel="stylesheet" href="quicksortDemo.css">
+</head>
+
+<body id="all">
+
+  <div id="intro">
+  <h1>Quicksort algorithm demonstration</h1>
+  <p>I present here a Javascript only demonstration of Quicksort. The number of values to be sorted is fixed to 150. The actual values are randomized.
+  </p>
+  </div>
+
+  <div id="counts">
+    <p id="compars">Number of comparisons: <span id="count"></span></p>
+    <p id="swaps">Number of swaps: <span id="swapCount"></span></p>
+  </div>
+
+  <div id="display">
+    <canvas id="canvas" width="620" height="600">
+    Your browser does not support HTML 5 Canvas
+    </canvas>
+    <a id=animanc></a>
+    <footer>
+    <br><br>
+    Dominique Ubersfeld, Cachan, France
+    </footer>
+  </div>
+
+  <div id="controls">
+    <div id="randomize">
+      <p>Click here to randomize the values to be sorted</p>
+      <form name="initialize" id="initelem">
+        <input type="submit" name="randomize-btn" value="Randomize">
+      </form>
+    </div>
+   
+    <div id="anim">
+      <p>Start animation of the Quicksort algorithm</p>
+      <form id="stanim">
+        <input type="submit" name="stanim-btn" value="Start animation">
+      </form>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
