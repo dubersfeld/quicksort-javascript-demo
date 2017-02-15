@@ -8,7 +8,7 @@ function canvasSupport() {
 function canvasApp() {
 
     var N = 150;// number of elements to sort
-    var delay = 100;
+    var delay = 50;
 
     var randomized = false;
  
@@ -26,18 +26,27 @@ function canvasApp() {
 
         this.mLength = values.length;
 
-        this.swap = function(i, j) {// swap aux[i] and aux[j], not i an j
+        this.swap = function(i, j) {
             var temp = this.values[i];
             this.values[i] = this.values[j];
             this.values[j] = temp;
         };// swap
 
-        this.partition = function(p, r) {
-            var temp = this.values[r];
+        this.partition = function(p, r, rand) {
+          
             var i = p;
+           
+    	    if (rand) {
+              var ir = Math.floor(Math.random() * (r - p + 1) + p);// from p to r included
+	
+              this.swap(r, ir);// preliminary pivot swap
+              this.results.push(this.values.slice(0));// save copy for animation after each swap
+            }
 
+            var pivot = this.values[r];
+            
             for (var j = p; j < r; j++) {
-                if (this.values[j] <= temp) {
+                if (this.values[j] <= pivot) {
                     i++;
                     this.swap(i-1, j);
                     this.results.push(this.values.slice(0));// save copy for animation after each swap
@@ -53,7 +62,7 @@ function canvasApp() {
         };// partition
 
         // main method, non recursive quicksort implementation, using explicit stack
-        this.quickSort = function() {    
+        this.quickSort = function(rand) {    
             var stack = [];
 
             this.swapCount = 0;
@@ -62,18 +71,18 @@ function canvasApp() {
             var p, q, r, top;
 
             stack.push([0, this.mLength-1]);
-           
+            
             // main loop
-            while (stack.length > 0) {         
+            while (stack.length > 0) {    
                 top = stack.pop();
                 p = top[0];
                 r = top[1];
                 
-                q = this.partition(p, r);        
+                q = this.partition(p, r, rand);        
 
                 // push on stack
                 if (q > 0 && p < q-1) {                        
-                    stack.push([p, q-1]);
+                    stack.push([p, q-1]);                 
                 }
 
                 if (r < this.mLength && q+1 < r) {                        
@@ -144,27 +153,31 @@ function canvasApp() {
         var val;
         var more;
 
-        var values = [];
+        var tempValues = [];
 
         for (var i = 0; i < N; i++) {
               more = true;// flag
               while(more) {
                 more = false;
                 val = Math.floor(Math.random() * 500 + 20);
-                for (var j = 0; j < values.length; j++) {
-                      if (val == values[j]) {// value already present
+                for (var j = 0; j < tempValues.length; j++) {
+                      if (val == tempValues[j]) {// value already present
                            more = true;
                          break;
                       } 
                 }           
               }
-              values[i] = val;    
+              tempValues[i] = val;    
         }
-     
+
+/*
+        tempValues = [ 48,431,51,419,403,122,210,177,135,158,194,459,171,338,66,515,266,243,95,85,
+				288,30,129,200,440,187,343,258,290,336,347,155,279,391,172,216,421,517,21,297,282,330,264,479,424,156,261,385,128,464 ];
+*/     
         randomized = true;
-        init(values);
+        init(tempValues);
     
-        return values;  
+        values = tempValues;  
     }// randomize
 
     $('#initelem').submit(function(event) { randomize(); return false; } );
@@ -179,7 +192,9 @@ function canvasApp() {
     function startAnim() {// this is an event handler  
         var sorter = new Sorter(values);
 
-        sorter.quickSort();
+        var rand = $('#random').prop('checked');
+        
+        sorter.quickSort(rand);
 
         display(sorter.results, sorter.count, sorter.swapCount);
     }
@@ -194,7 +209,7 @@ function canvasApp() {
         // initialize
         var iAnim = 0;
         var temp = [];
-
+	
         function act() {               
             temp = results[iAnim];
 
@@ -205,6 +220,7 @@ function canvasApp() {
               iAnim++;
               setTimeout(act, delay);
             } else {// animation completed
+                console.log("animation completed");
                 $('#stanim').find(':submit')[0].disabled = false;
                 $('#initelem').find(':submit')[0].disabled = false;
             }
@@ -212,15 +228,14 @@ function canvasApp() {
 
         window.location.hash = "#animanc";
 
+	console.log("starting animation");
         act();
-
     }
 
     initGeometry();
 
     values = randomize();
     
-    console.log("canvasApp completed");
 }// canvasApp
 
 $(document).ready(canvasApp);

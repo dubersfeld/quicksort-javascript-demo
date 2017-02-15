@@ -18,7 +18,9 @@
 
   <div id="intro">
   <h1>Quicksort algorithm demonstration</h1>
-  <p>I present here a Javascript only demonstration of Quicksort. The number of values to be sorted is fixed to 150. The actual values are randomized.
+  <p>I present here a Javascript only demonstration of Quicksort.<br/> 
+The number of values to be sorted is fixed to 150.<br/> The actual values are randomized.<br/>
+You can choose between the basic Quicksort and the version with random pivot choice.
   </p>
   </div>
 
@@ -39,6 +41,14 @@
   </div>
 
   <div id="controls">
+
+    <div>
+      <form id="partition">
+        <input type="checkbox" name="random" id="random">Random pivot choice<br>
+      </form>
+    </div>   
+
+
     <div id="randomize">
       <p>Click here to randomize the values to be sorted and run Quicksort</p>
       <form name="initialize" id="initelem">
