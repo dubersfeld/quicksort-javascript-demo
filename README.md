@@ -9,6 +9,8 @@ The number of elements is fixed to 150.
 
 The initial values are randomized.
 
+The user can choose between the basic version and the version with random pivot choice.
+
 I closely followed the approach of Cormen described in his reference textbook.
 
 More stuff is coming soon.
